@@ -41,3 +41,8 @@ Sub AutoFill()
 
 End Sub
 ```
+
+## Sales & Collection
+1. Autocount > A/R > Monthly Sales & Collection.
+2. Pick date range > Preview > Export to XLSX.
+3. Done.
