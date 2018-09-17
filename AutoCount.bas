@@ -72,13 +72,23 @@ Sub ParseSalesCollection()
             End If
             
             For j = 1 To 12
-                output.Cells(x, 1) = customer
-                output.Cells(x, 2) = dateHeaders(j)
+                Dim sales As Double
+                Dim collection As Double
+                
                 ' grab sales amount per customer per month
-                output.Cells(x, 3) = source.Cells(i, headers(j)).Value
+                sales = source.Cells(i, headers(j)).Value
+                
                 ' grab collection amount per customer per month
-                output.Cells(x, 4) = source.Cells(i + 2, headers(j)).Value
-                x = x + 1
+                collection = source.Cells(i + 2, headers(j)).Value
+                
+                ' only insert non zero record
+                If (sales > 0 And collection > 0) Then
+                    output.Cells(x, 1) = customer
+                    output.Cells(x, 2) = dateHeaders(j)
+                    output.Cells(x, 3) = sales
+                    output.Cells(x, 4) = collection
+                    x = x + 1
+                End If
             Next j
         End If
     Next i
