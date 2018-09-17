@@ -1,5 +1,6 @@
 Attribute VB_Name = "Module1"
 ' Auto fill stock card
+' TODO: Set activesheet
 Sub AutoFill()
     Dim order As String
     Dim stock As String
@@ -29,3 +30,31 @@ Sub AutoFill()
     Next i
 
 End Sub
+' parse monthly sales and collection into fact records for pivot table uses
+Sub ParseSalesCollection()
+
+    Dim source As Worksheet
+    Set source = Sheets("source")
+    
+    ' add new worksheet at last
+    Dim output As Worksheet
+    Set output = ThisWorkbook.Sheets.Add(After:=ThisWorkbook.Sheets(ThisWorkbook.Sheets.Count))
+    output.Name = "output"
+    
+    Dim headers(1 To 12) As String
+    Dim customer As String
+    
+    Let j = 1
+    For i = 2 To 50
+        If (source.Cells(12, i).Value = "Total") Then
+            Exit For
+        End If
+        
+        If (Not IsEmpty(source.Cells(12, i))) Then
+            headers(j) = source.Cells(12, i).Value
+            j = j + 1
+        End If
+    Next i
+
+End Sub
+
