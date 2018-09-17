@@ -41,9 +41,11 @@ Sub ParseSalesCollection()
     Set output = ThisWorkbook.Sheets.Add(After:=ThisWorkbook.Sheets(ThisWorkbook.Sheets.Count))
     output.Name = "output"
     
-    Dim headers(1 To 12) As String
+    Dim dateHeaders(1 To 12) As String
+    Dim headers(1 To 12) As Integer
     Dim customer As String
     
+    ' retrieve date collection
     Let j = 1
     For i = 2 To 50
         If (source.Cells(12, i).Value = "Total") Then
@@ -51,8 +53,33 @@ Sub ParseSalesCollection()
         End If
         
         If (Not IsEmpty(source.Cells(12, i))) Then
-            headers(j) = source.Cells(12, i).Value
+            headers(j) = i
+            dateHeaders(j) = source.Cells(12, i).Value
             j = j + 1
+        End If
+    Next i
+    
+    ' output row to be insert
+    Let x = 1
+    
+    ' retrieve sales and collection once found new customer
+    For i = 13 To 1000
+        If (Not IsEmpty(source.Cells(i, 1))) Then
+            customer = source.Cells(i, 1).Value
+            
+            If (customer = "Report Criteria") Then
+                Exit For
+            End If
+            
+            For j = 1 To 12
+                output.Cells(x, 1) = customer
+                output.Cells(x, 2) = dateHeaders(j)
+                ' grab sales amount per customer per month
+                output.Cells(x, 3) = source.Cells(i, headers(j)).Value
+                ' grab collection amount per customer per month
+                output.Cells(x, 4) = source.Cells(i + 2, headers(j)).Value
+                x = x + 1
+            Next j
         End If
     Next i
 
